@@ -6,14 +6,17 @@ namespace chat31
 {
     public partial class Form1 : Form
     {
-        string login = "";
+        static string login = "";
         string password = "";
         bool goOnline = false;
         public Form1()
         {
             InitializeComponent();
         }
-
+        public string GetLogin()
+        {
+            return login;
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             login = LoginInput.Text.Trim();
@@ -61,13 +64,16 @@ namespace chat31
                     connection.Open();
                     loginCommand.ExecuteNonQuery();
                     connection.Close();
+                    Form2 form2 = new Form2();
+                    form2.Show();
+                    //this.Close();
+                    
                 }
             }
             else
             {
                 ErrorLabel.Text = "Логин или пароль не введены!";
             }
-
         }
     }
 }

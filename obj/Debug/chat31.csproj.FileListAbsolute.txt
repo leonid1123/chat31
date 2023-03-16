@@ -24,3 +24,4 @@ D:\repos\pk31\chat31\obj\Debug\chat31.csproj.CoreCompileInputs.cache
 D:\repos\pk31\chat31\obj\Debug\chat31.csproj.CopyComplete
 D:\repos\pk31\chat31\obj\Debug\chat31.exe
 D:\repos\pk31\chat31\obj\Debug\chat31.pdb
+D:\repos\pk31\chat31\obj\Debug\chat31.Form2.resources
