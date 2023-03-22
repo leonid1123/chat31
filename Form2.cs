@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,7 +22,25 @@ namespace chat31
         {
             Form1 form1= new Form1();
             string userLogin = form1.GetLogin();
-            label1.Text = "Добро пожаловать в наш МеГаЧаД: " + userLogin;
+            MySqlConnection connection = new MySqlConnection("Server=localhost;User ID=pk31;Password=123456;Database=pk31chat");
+            connection.Open();
+            MySqlCommand command = new MySqlCommand("SELECT `nik` FROM `users` WHERE `login`= @param", connection);
+            command.Parameters.AddWithValue("param", userLogin);
+            command.ExecuteNonQuery();
+            MySqlDataReader reader = command.ExecuteReader();
+            reader.Read();
+            //SELECT `nik` FROM `users` WHERE `login`= "user"
+            label1.Text = "Добро пожаловать: " + reader.GetString(0);
+            //SELECT `nik` FROM `users` WHERE `online`= true
+            connection.Close();
+            connection.Open();
+            MySqlCommand onlineUsers = new MySqlCommand("SELECT `nik` FROM `users` WHERE `online`= true", connection);
+            MySqlDataReader onlineUsersReader = onlineUsers.ExecuteReader();
+            listBox2.Items.Clear();
+            while(onlineUsersReader.Read())
+            {
+                listBox2.Items.Add(onlineUsersReader.GetString(0));
+            }
         }
     }
 }
