@@ -5,9 +5,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace chat31
 {
@@ -41,6 +44,19 @@ namespace chat31
             {
                 listBox2.Items.Add(onlineUsersReader.GetString(0));
             }
+            connection.Close();
+            connection.Open();
+            MySqlCommand getAllMsg = new MySqlCommand("SELECT `users`.`nik`, `msg`.`time`," +
+                "`msg`.`text` FROM `msg` JOIN `users` ON `msg`.`nik`=`users`.`id` " +
+                "ORDER BY `msg`.`time` DESC", connection);
+            MySqlDataReader getAllMsgReader = getAllMsg.ExecuteReader();
+            listBox1.Items.Clear();
+            while(getAllMsgReader.Read())
+            {
+                listBox1.Items.Add(getAllMsgReader.GetString(0) + ":" + getAllMsgReader.GetDateTime(1));
+                listBox1.Items.Add(getAllMsgReader.GetString(2));
+            }
+            //SELECT `users`.`nik`, `msg`.`time`,`msg`.`text` FROM `msg` JOIN `users` ON `msg`.`nik`=`users`.`id` ORDER BY `msg`.`time` DESC
         }
     }
 }
