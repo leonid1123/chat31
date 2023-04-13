@@ -23,10 +23,11 @@ namespace chat31
             password = PassInput.Text.Trim();
             if (login.Length != 0 & password.Length != 0)
             {
-                MySqlConnection connection = new MySqlConnection("Server=localhost;User ID=pk31;Password=123456;Database=pk31chat");
-                connection.Open();
-                ErrorLabel.Text = connection.State.ToString();
-                MySqlCommand command = new MySqlCommand("SELECT password FROM users WHERE login =@param;", connection);
+                //MySqlConnection connection = new MySqlConnection("Server=localhost;User ID=pk31;Password=123456;Database=pk31chat");
+                //connection.Open();
+
+                ErrorLabel.Text = DataBaseConnection.GetConnection().State.ToString();
+                MySqlCommand command = new MySqlCommand("SELECT password FROM users WHERE login =@param;", DataBaseConnection.GetConnection());
                 command.Parameters.AddWithValue("param", login);
                 command.ExecuteNonQuery();
                 MySqlDataReader reader = command.ExecuteReader();
@@ -54,16 +55,16 @@ namespace chat31
                 //то проверить пароль на совпадение,+
                 //если совпадает, то поменять статус online на true
                 //после перейти в окно чата
-                connection.Close();
+                DataBaseConnection.CloseConnection();
                 if (goOnline)
                 {
 
                     MySqlCommand loginCommand = 
-                        new MySqlCommand("UPDATE `users` SET `online` = true WHERE `users`.`login` = @param1;", connection);
+                        new MySqlCommand("UPDATE `users` SET `online` = true WHERE `users`.`login` = @param1;", DataBaseConnection.GetConnection());
                     loginCommand.Parameters.AddWithValue("param1", login);
-                    connection.Open();
+                    
                     loginCommand.ExecuteNonQuery();
-                    connection.Close();
+                    DataBaseConnection.CloseConnection();
                     Form2 form2 = new Form2();
                     form2.Show();
                     //this.Close();
