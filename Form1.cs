@@ -9,6 +9,12 @@ namespace chat31
         static string login = "";
         string password = "";
         bool goOnline = false;
+        static int id;
+
+        public int GetMyId()
+        {
+            return id;
+        }
         public Form1()
         {
             InitializeComponent();
@@ -27,7 +33,7 @@ namespace chat31
                 //connection.Open();
 
                 ErrorLabel.Text = DataBaseConnection.GetConnection().State.ToString();
-                MySqlCommand command = new MySqlCommand("SELECT password FROM users WHERE login =@param;", DataBaseConnection.GetConnection());
+                MySqlCommand command = new MySqlCommand("SELECT password, id FROM users WHERE login =@param;", DataBaseConnection.GetConnection());
                 command.Parameters.AddWithValue("param", login);
                 command.ExecuteNonQuery();
                 MySqlDataReader reader = command.ExecuteReader();
@@ -39,6 +45,7 @@ namespace chat31
                     {
                         ErrorLabel.Text += "пароль совпадает";
                         goOnline = true;
+                        id = reader.GetInt32(1);
                     }
                     else
                     {
